@@ -5,18 +5,36 @@ function Book(title, author, pages, read) {
     this.read = read;
 }
 
-function displayNewBook() {
+function updateLibrary() {
+    removeCurrentLibrary();
     const bookDisplay = document.querySelector(".bookCardDisplay");
 
-    let book = library[library.length - 1];
-    let bookInfo = document.createElement("p");
-    bookInfo.textContent = book.showInfo();
+    library.forEach((book, index) => {
+        let bookInfo = document.createElement("p");
+        bookInfo.textContent = book.showInfo();
 
-    let bookCard = document.createElement("div");
-    bookCard.classList.add("bookCard");
-    bookCard.appendChild(bookInfo);
+        let removeButton = document.createElement("button");
+        removeButton.textContent = "Remove";
+        removeButton.setAttribute("data-library-index", index);
+        removeButton.addEventListener("click", (event) => {
+            let bookIndex = event.target.getAttribute("data-library-index");
+            library.splice(bookIndex, 1);
+            console.log(library);
+            updateLibrary();
+        });
 
-    bookDisplay.appendChild(bookCard);
+        let bookCard = document.createElement("div");
+        bookCard.classList.add("bookCard");
+        bookCard.appendChild(bookInfo);
+        bookCard.appendChild(removeButton);
+
+        bookDisplay.appendChild(bookCard);
+    });
+}
+
+function removeCurrentLibrary() {
+    const bookCards = document.querySelectorAll(".bookCard");
+    bookCards.forEach((bookCard) => bookCard.remove());
 }
 
 // Adding methods to the prototype is more memory efficient than adding them to the constructor
@@ -45,10 +63,10 @@ form.addEventListener("submit", (event) => {
     let read = (document.querySelector("select").value === "true");
 
     library.push(new Book(title, author, pages, read));
-    displayNewBook();
+    updateLibrary();
     
     // Resets values in case the user wants to add another book
     bookInfo.forEach((info) => info.value = "");
     document.querySelector("select").value = "false";
     dialog.close();
-})
+});
