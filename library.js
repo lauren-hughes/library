@@ -19,14 +19,29 @@ function updateLibrary() {
         removeButton.addEventListener("click", (event) => {
             let bookIndex = event.target.getAttribute("data-library-index");
             library.splice(bookIndex, 1);
-            console.log(library);
             updateLibrary();
+        });
+
+        let readToggle = document.createElement("select");
+        readToggle.setAttribute("data-library-index", index);
+        const options = ["Read", "Not Read"];
+        options.forEach((option) => {
+            let currentOption = document.createElement("option");
+            currentOption.value = option;
+            currentOption.textContent = option;
+            readToggle.appendChild(currentOption);
+        });
+        readToggle.value = (book.read) ? "Read" : "Not Read";
+        readToggle.addEventListener("change", (event) => {
+            let bookIndex = event.target.getAttribute("data-library-index");
+            library[bookIndex].read = (event.target.value === "Read") ? true : false;
         });
 
         let bookCard = document.createElement("div");
         bookCard.classList.add("bookCard");
         bookCard.appendChild(bookInfo);
         bookCard.appendChild(removeButton);
+        bookCard.appendChild(readToggle);
 
         bookDisplay.appendChild(bookCard);
     });
@@ -39,7 +54,7 @@ function removeCurrentLibrary() {
 
 // Adding methods to the prototype is more memory efficient than adding them to the constructor
 Book.prototype.showInfo = function() {
-    return `${this.title} by ${this.author}, ${this.pages} pages, ` + (this.read ? "read" : "not read yet");
+    return `${this.title} by ${this.author}, ${this.pages} pages`;
 };
 
 const library = [];
@@ -67,6 +82,6 @@ form.addEventListener("submit", (event) => {
     
     // Resets values in case the user wants to add another book
     bookInfo.forEach((info) => info.value = "");
-    document.querySelector("select").value = "false";
+    document.querySelector("form select").value = "false";
     dialog.close();
 });
