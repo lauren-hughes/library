@@ -8,6 +8,33 @@
     <script src="./library.js" defer></script>
 </head>
 <body>
+    <button class="newBookButton">New Book</button>
     <div class="bookCardDisplay"></div>
+
+    <dialog>
+        <form>
+            <div>
+                <label for="title">Title</label>
+                <input type="text" name="title" id="title" required>
+            </div>
+            <div>
+                <label for="author">Author</label>
+                <input type="text" name="author" id="author" required>
+            </div>
+            <div>
+                <label for="pages">Number of Pages</label>
+                <input type="number" name="pages" id="pages" required>
+            </div>
+            <div>
+                <label for="read">Read?</label>
+                <select name="read" id="read">
+                    <option selected value="false">Not Read</option>
+                    <option value="true">Read</option>
+                </select>
+            </div>
+            <button>Add Book</button>
+        </form>
+        <button>Cancel</button>
+    </dialog>
 </body>
 </html>
